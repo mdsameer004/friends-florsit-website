@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Friends Florist</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .page-header {
+            padding: 100px 0 40px;
+            text-align: center;
+        }
+        .checkout-container {
+            display: flex;
+            gap: 40px;
+            padding-bottom: 80px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .checkout-form-area {
+            flex: 1.5;
+            background: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+        .checkout-summary-area {
+            flex: 1;
+            background: var(--color-light-pink);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 40px;
+        }
+        .form-section h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-main);
+        }
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus {
+            border-color: var(--color-dark-green);
+        }
+
+        /* Payment Gateway Mock UI */
+        .razorpay-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .razorpay-overlay.active {
+            display: flex;
+        }
+        .razorpay-modal {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .rp-header {
+            background: #02042b;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .rp-logo {
+            font-family: var(--font-heading);
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .rp-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        .rp-body {
+            padding: 20px;
+        }
+        .rp-amount-display {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .payment-method:hover {
+            border-color: #3399cc;
+            background: #f8fbff;
+        }
+        .payment-method img {
+            width: 30px;
+            margin-right: 15px;
+        }
+
+        /* Order Items Mini List */
+        .mini-cart-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+            padding-bottom: 10px;
+        }
+        .mini-cart-item span:first-child {
+            flex: 1;
+            padding-right: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .checkout-container {
+                flex-direction: column-reverse;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="navbar-container"></div>
+
+    <main>
+        <header class="page-header">
+            <h1 class="section-title">Secure Checkout</h1>
+        </header>
+
+        <section class="container checkout-container">
+            <div class="checkout-form-area">
+                <form id="checkout-form" onsubmit="event.preventDefault(); openRazorpay();">
+                    
+                    <div class="form-section">
+                        <h3>Customer Details</h3>
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" required placeholder="123-456-7890">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Delivery Address</h3>
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label for="address">Street Address</label>
+                                <input type="text" id="address" required placeholder="123 Floral Street, Apt 4B">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" required placeholder="Blossom City">
+                            </div>
+                            <div class="form-group">
+                                <label for="pincode">Pincode</label>
+                                <input type="text" id="pincode" required placeholder="12345">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Payment Option</h3>
+                        <p style="color: var(--color-text-light); font-size: 0.9rem; margin-bottom: 15px;">
+                            Click below to securely pay via Razorpay.
+                        </p>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 15px;">Pay Securely Now</button>
+                        <p style="text-align: center; margin-top: 15px; cursor: pointer; color: var(--color-text-light); text-decoration: underline;" onclick="processCOD()">Or pay via Cash on Delivery</p>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="checkout-summary-area">
+                <h3 style="font-size: 1.3rem; margin-bottom: 20px;">Order Summary</h3>
+                <div id="checkout-items-list" style="margin-bottom: 25px;">
+                    <!-- Parsed via JS -->
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; margin-bottom: 10px;">
+                    <span>Subtotal</span><span id="chk-subtotal">₹0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 10px;">
+                    <span>Tax</span><span id="chk-tax">₹0</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
+                    <span>Delivery</span><span id="chk-delivery">₹0</span>
+                </div>
+                
+                <div style="display:flex; justify-content:space-between; font-size: 1.4rem; font-weight: bold; border-top: 2px solid var(--color-border); padding-top: 15px;">
+                    <span>Total</span><span id="chk-total">₹0</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Razorpay Mock Modal -->
+    <div class="razorpay-overlay" id="rp-overlay">
+        <div class="razorpay-modal">
+            <div class="rp-header">
+                <div class="rp-logo">
+                    <span style="background: white; color: #02042b; padding: 2px 5px; border-radius: 2px; margin-right: 5px;">R</span> Razorpay
+                </div>
+                <div class="rp-close" onclick="closeRazorpay()">&times;</div>
+            </div>
+            <div class="rp-body">
+                <div style="text-align: center; color: #666; font-size: 0.9rem; margin-bottom: 5px;">Friends Florist</div>
+                <div class="rp-amount-display" id="rp-amount">₹0.00</div>
+                
+                <div style="margin-bottom: 20px; font-weight: 500;">Select Payment Method</div>
+                
+                <div class="payment-method" onclick="simulatePayment('UPI')">
+                    <div style="font-size: 1.5rem; margin-right: 15px;">📱</div>
+                    <div>
+                        <div style="font-weight: 500;">UPI</div>
+                        <div style="font-size: 0.8rem; color: #666;">Google Pay, PhonePe, Paytm</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="simulatePayment('Card')">
+                    <div style="font-size: 1.5rem; margin-right: 15px;">💳</div>
+                    <div>
+                        <div style="font-weight: 500;">Card</div>
+                        <div style="font-size: 0.8rem; color: #666;">Visa, MasterCard, RuPay</div>
+                    </div>
+                </div>
+                
+                <div class="payment-method" onclick="simulatePayment('Net Banking')">
+                    <div style="font-size: 1.5rem; margin-right: 15px;">🏦</div>
+                    <div>
+                        <div style="font-weight: 500;">Net Banking</div>
+                        <div style="font-size: 0.8rem; color: #666;">All Indian Banks</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let finalTotalAmount = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (cart.length === 0) {
+                alert("Your cart is empty. Diverting to shop.");
+                window.location.href = 'shop.html';
+                return;
+            }
+
+            const container = document.getElementById('checkout-items-list');
+            let html = '';
+            
+            cart.forEach(item => {
+                html += `
+                    <div class="mini-cart-item">
+                        <span>${item.name} (x${item.quantity})</span>
+                        <span>₹${(item.price * item.quantity).toLocaleString('en-IN')}</span>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            const totals = getCartTotal();
+            document.getElementById('chk-subtotal').textContent = `₹${totals.subtotal.toLocaleString('en-IN')}`;
+            document.getElementById('chk-tax').textContent = `₹${totals.tax.toLocaleString('en-IN')}`;
+            document.getElementById('chk-delivery').textContent = totals.delivery === 0 ? 'Free' : `₹${totals.delivery.toLocaleString('en-IN')}`;
+            document.getElementById('chk-total').textContent = `₹${totals.total.toLocaleString('en-IN')}`;
+            
+            finalTotalAmount = totals.total;
+        });
+
+        const rpOverlay = document.getElementById('rp-overlay');
+        
+        function openRazorpay() {
+            if(!document.getElementById('checkout-form').checkValidity()) {
+                document.getElementById('checkout-form').reportValidity();
+                return;
+            }
+            document.getElementById('rp-amount').textContent = `₹${finalTotalAmount.toLocaleString('en-IN')}`;
+            rpOverlay.classList.add('active');
+        }
+
+        function closeRazorpay() {
+            rpOverlay.classList.remove('active');
+        }
+
+        function saveOrder(method) {
+            let orders = JSON.parse(localStorage.getItem('friendsFloristOrders')) || [];
+            const orderId = 'ORD-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            const orderDate = new Date().toLocaleDateString();
+            
+            const order = {
+                id: orderId,
+                date: orderDate,
+                items: cart,
+                total: finalTotalAmount,
+                method: method,
+                status: 'Processing'
+            };
+            
+            orders.unshift(order); // Add to beginning of array
+            localStorage.setItem('friendsFloristOrders', JSON.stringify(orders));
+            
+            // Clear cart
+            localStorage.removeItem('friendsFloristCart');
+            
+            window.location.href = 'confirmation.html?method=' + encodeURIComponent(method) + '&id=' + orderId;
+        }
+
+        function simulatePayment(method) {
+            rpOverlay.innerHTML = `
+                <div style="background: white; padding: 40px; border-radius: 8px; text-align: center; width: 300px;">
+                    <h3 style="margin-bottom: 20px;">Processing ${method}...</h3>
+                    <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--color-dark-green); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+                </div>
+                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
+            `;
+            
+            setTimeout(() => {
+                saveOrder(method);
+            }, 2000);
+        }
+
+        function processCOD() {
+            if(!document.getElementById('checkout-form').checkValidity()) {
+                document.getElementById('checkout-form').reportValidity();
+                return;
+            }
+            if(confirm("Place order via Cash on Delivery?")) {
+                saveOrder('Cash on Delivery');
+            }
+        }
+    </script>
+</body>
+</html>

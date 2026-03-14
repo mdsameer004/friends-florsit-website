@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Friends Florist</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .page-header {
+            padding: 100px 0 60px;
+            text-align: center;
+            background-color: var(--color-light-pink);
+            margin-bottom: 40px;
+        }
+        .gallery-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid var(--color-dark-green);
+            background: transparent;
+            color: var(--color-dark-green);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--color-dark-green);
+            color: white;
+        }
+        
+        /* Masonry Grid */
+        .gallery-grid {
+            columns: 3 300px;
+            column-gap: 20px;
+            padding-bottom: 80px;
+        }
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            transition: transform 0.5s ease;
+        }
+        .gallery-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(46, 139, 87, 0.7);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+        
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 4px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .lightbox-caption {
+            color: white;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="navbar-container"></div>
+
+    <main>
+        <header class="page-header">
+            <div class="container">
+                <h1 class="section-title">Event & Decoration Gallery</h1>
+                <p>Browse through our spectacular setups and premium floral arrangements.</p>
+            </div>
+        </header>
+
+        <section class="container">
+            <div class="gallery-filter">
+                <button class="filter-btn active" onclick="filterGallery('All')">All</button>
+                <button class="filter-btn" onclick="filterGallery('Wedding')">Weddings</button>
+                <button class="filter-btn" onclick="filterGallery('Birthday')">Birthdays</button>
+                <button class="filter-btn" onclick="filterGallery('Event')">Events</button>
+            </div>
+
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Images dynamically inserted -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img src="" alt="Gallery Image" class="lightbox-img" id="lightbox-img">
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        const galleryItems = [
+            { src: 'https://images.unsplash.com/photo-1591203281954-23fa2ff8ef18?w=800', category: 'Wedding', caption: 'Elegant Wedding Centerpiece' },
+            { src: 'https://plus.unsplash.com/premium_photo-1661429475489-3f6932220757?w=800', category: 'Event', caption: 'Corporate Event Entrance' },
+            { src: 'https://images.unsplash.com/photo-1755704282977-340323fa52df?w=800', category: 'Birthday', caption: 'Pastel Birthday Setup' },
+            { src: 'https://images.unsplash.com/photo-1673001161631-198351b9b933?w=800', category: 'Wedding', caption: 'Bridal Bouquet' },
+            { src: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800', category: 'Wedding', caption: 'Wedding Arch' },
+            { src: 'https://images.unsplash.com/photo-1653821355168-144695e5c0e6?w=800', category: 'Event', caption: 'Gala Dinner Tablescape' },
+            { src: 'https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=800', category: 'Birthday', caption: 'Sweet 16 Decoration' },
+            { src: 'https://images.unsplash.com/photo-1602959917275-788c6a3e37e3?w=800', category: 'Wedding', caption: 'Rustic Peony Setup' },
+        ];
+
+        function renderGallery(filter = 'All') {
+            const grid = document.getElementById('gallery-grid');
+            grid.innerHTML = '';
+            
+            const filtered = filter === 'All' ? galleryItems : galleryItems.filter(i => i.category === filter);
+            
+            filtered.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'gallery-item';
+                div.innerHTML = `
+                    <img src="${item.src}" loading="lazy" alt="${item.caption}">
+                    <div class="gallery-overlay">
+                        <h3>${item.caption}</h3>
+                        <p>${item.category}</p>
+                    </div>
+                `;
+                div.onclick = () => openLightbox(item.src, item.caption);
+                grid.appendChild(div);
+            });
+        }
+
+        function filterGallery(category) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if((category === 'All' && btn.textContent === 'All') || btn.textContent.includes(category)) {
+                    btn.classList.add('active');
+                }
+            });
+            renderGallery(category);
+        }
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightbox-img');
+        const lbCap = document.getElementById('lightbox-caption');
+
+        function openLightbox(src, caption) {
+            lbImg.src = src;
+            lbCap.textContent = caption;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // prevent scrolling
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close on background click
+        lightbox.addEventListener('click', (e) => {
+            if(e.target === lightbox) closeLightbox();
+        });
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => renderGallery('All'));
+    </script>
+</body>
+</html>

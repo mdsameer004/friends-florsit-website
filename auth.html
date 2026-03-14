@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Friends Florist</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .auth-wrapper {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-color: var(--color-bg-gray);
+        }
+
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fdfdfd;
+        }
+
+        .auth-tab.active {
+            color: var(--color-dark-green);
+            background: white;
+            position: relative;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-dark-green);
+        }
+
+        .auth-body {
+            padding: 40px;
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .form-title p {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-text-main);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 10px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: var(--color-dark-green);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .form-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--color-text-light);
+        }
+
+        .form-footer a {
+            color: var(--color-dark-green);
+            font-weight: 600;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Navbar Component Container -->
+    <div id="navbar-container"></div>
+
+    <main class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchAuth('login')">Login</div>
+                <div class="auth-tab" id="tab-register" onclick="switchAuth('register')">Register</div>
+            </div>
+
+            <div class="auth-body">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active" onsubmit="handleAuth(event, 'login')">
+                    <div class="form-title">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to your Friends Florist account</p>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••" required>
+                    </div>
+
+                    <div style="text-align: right; margin-bottom: 20px;">
+                        <a href="#" style="font-size: 0.85rem; color: var(--color-text-light);">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-btn">Secure Login</button>
+
+                    <div class="form-footer">
+                        Don't have an account? <a href="javascript:void(0)" onclick="switchAuth('register')">Register here</a>
+                    </div>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" class="auth-form" onsubmit="handleAuth(event, 'register')">
+                    <div class="form-title">
+                        <h2>Join Our Community</h2>
+                        <p>Create an account for exclusive floral deals</p>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reg-name">Full Name</label>
+                        <input type="text" id="reg-name" placeholder="John Doe" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="reg-email">Email Address</label>
+                        <input type="email" id="reg-email" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="reg-password">Password</label>
+                        <input type="password" id="reg-password" placeholder="••••••••" required>
+                    </div>
+
+                    <div class="input-group" style="display: flex; gap: 10px; align-items: flex-start;">
+                        <input type="checkbox" id="terms" style="width: auto; margin-top: 4px;" required>
+                        <label for="terms" style="font-size: 0.8rem; font-weight: 400; color: var(--color-text-light);">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-btn">Create Account</button>
+
+                    <div class="form-footer">
+                        Already have an account? <a href="javascript:void(0)" onclick="switchAuth('login')">Login here</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component Container -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function switchAuth(type) {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const loginTab = document.getElementById('tab-login');
+            const registerTab = document.getElementById('tab-register');
+
+            if (type === 'login') {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+            } else {
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+            }
+        }
+
+        function handleAuth(event, type) {
+            event.preventDefault();
+            // Placeholder for real backend logic
+            const email = type === 'login' ? 
+                document.getElementById('login-email').value : 
+                document.getElementById('reg-email').value;
+            
+            alert(`${type === 'login' ? 'Logging in' : 'Registering'} with: ${email}\n\nThis will be connected to our backend soon!`);
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

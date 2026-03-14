@@ -1,0 +1,59 @@
+:root {
+  /* Premium Floral Palette */
+  --primary: #9b6a6c;     /* Muted Rose */
+  --primary-light: #c29597;
+  --secondary: #4a5d4e;   /* Sage Green */
+  --secondary-light: #7b8e7f;
+  --accent: #d4a373;      /* Warm Gold */
+  
+  --bg-main: #faf9f7;     /* Off-white */
+  --bg-card: #ffffff;
+  --text-dark: #2a2a2a;
+  --text-light: #6e6e6e;
+  
+  --border-color: #e5e0d8;
+  
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light;
+  color: var(--text-dark);
+  background-color: var(--bg-main);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  color: var(--text-dark);
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}

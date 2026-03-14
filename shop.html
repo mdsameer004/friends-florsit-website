@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Friends Florist</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .page-header {
+            padding: 100px 0 60px;
+            text-align: center;
+            background-color: var(--color-light-pink);
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        .shop-container {
+            display: flex;
+            gap: 40px;
+            padding-bottom: 80px;
+        }
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+        .filter-group {
+            margin-bottom: 30px;
+        }
+        .filter-group h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--color-soft-pink);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .filter-list li {
+            margin-bottom: 10px;
+        }
+        .filter-list a {
+            cursor: pointer;
+            color: var(--color-text-light);
+        }
+        .filter-list a:hover, .filter-list a.active {
+            color: var(--color-dark-green);
+            font-weight: 500;
+        }
+        .products-area {
+            flex: 1;
+        }
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .sort-select {
+            padding: 8px 15px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius);
+            font-family: var(--font-body);
+            outline: none;
+        }
+        @media (max-width: 900px) {
+            .shop-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+            }
+            .filter-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="navbar-container"></div>
+
+    <main>
+        <header class="page-header">
+            <div class="container">
+                <h1>Our Collection</h1>
+                <p>Find the perfect arrangement for any occasion</p>
+            </div>
+        </header>
+
+        <section class="container shop-container">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="filter-group">
+                    <h3>Categories</h3>
+                    <ul class="filter-list" id="category-filters">
+                        <li><a onclick="filterProducts('All')" class="active">All Arrangements</a></li>
+                        <li><a onclick="filterProducts('Anniversary Flowers')">Anniversary Flowers</a></li>
+                        <li><a onclick="filterProducts('Birthday Bouquets')">Birthday Bouquets</a></li>
+                        <li><a onclick="filterProducts('Event Decorations')">Event Decorations</a></li>
+                        <li><a onclick="filterProducts('Wedding Decorations')">Wedding Decorations</a></li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Products Grid -->
+            <div class="products-area">
+                <div class="products-header">
+                    <p id="product-count">Showing 0 results</p>
+                    <select class="sort-select" id="sort-select" onchange="sortProducts()">
+                        <option value="featured">Featured</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                    </select>
+                </div>
+                
+                <div class="modern-shop-grid" id="modern-shop-grid">
+                    <!-- Products will be rendered here via JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let currentProducts = [...products];
+
+        function renderShopGrid() {
+            const grid = document.getElementById('modern-shop-grid');
+            const count = document.getElementById('product-count');
+            
+            grid.innerHTML = currentProducts.map(p => createModernProductCard(p)).join('');
+            count.textContent = `Showing ${currentProducts.length} results`;
+        }
+
+        function filterProducts(category) {
+            // Update active link
+            document.querySelectorAll('#category-filters a').forEach(a => {
+                a.classList.remove('active');
+                if(category === "All" && a.textContent === 'All Arrangements') a.classList.add('active');
+                else if(a.textContent === category) a.classList.add('active');
+            });
+
+            if (category === 'All') {
+                currentProducts = [...products];
+            } else {
+                currentProducts = products.filter(p => p.category === category);
+            }
+            sortProducts(); // Re-apply sorting
+        }
+
+        function sortProducts() {
+            const sortVal = document.getElementById('sort-select').value;
+            if (sortVal === 'price-low') {
+                currentProducts.sort((a, b) => a.price - b.price);
+            } else if (sortVal === 'price-high') {
+                currentProducts.sort((a, b) => b.price - a.price);
+            } else if (sortVal === 'rating') {
+                currentProducts.sort((a, b) => b.rating - a.rating);
+            } else {
+                // Featured (default id sorting)
+                currentProducts.sort((a, b) => a.id - b.id);
+            }
+            renderShopGrid();
+        }
+
+        // Parse URL params for initial category/search
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const search = urlParams.get('search');
+            const cat = urlParams.get('category');
+            const deal = urlParams.get('deal');
+
+            if (search) {
+                currentProducts = products.filter(p => 
+                    p.name.toLowerCase().includes(search.toLowerCase()) || 
+                    p.category.toLowerCase().includes(search.toLowerCase())
+                );
+                document.getElementById('product-count').textContent = `Search results for "${search}"`;
+                renderShopGrid();
+            } else if (cat) {
+                filterProducts(cat);
+            } else if (deal === 'anniversary') {
+                filterProducts('Anniversary Flowers');
+            } else {
+                renderShopGrid();
+            }
+        });
+    </script>
+</body>
+</html>

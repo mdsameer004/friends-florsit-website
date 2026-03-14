@@ -1,0 +1,41 @@
+<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Minimal Floral Pattern - Friends Florist Custom Design -->
+  <style>
+    .flower { opacity: 0.12; fill: none; stroke: #2E8B57; stroke-width: 0.8; }
+    .leaf { opacity: 0.08; fill: none; stroke: #2E8B57; stroke-width: 0.5; }
+  </style>
+  
+  <g class="flower">
+    <!-- Rose Sketch (Top Left) -->
+    <path d="M50 150 C50 150 30 130 30 110 C30 95 45 90 50 105 C55 90 70 95 70 110 C70 130 50 150 50 150 Z" transform="translate(20, 20) rotate(-10 50 150)"/>
+    
+    <!-- Tulip Sketch (Middle) -->
+    <path d="M200 200 L200 150 M200 150 C185 150 175 130 200 120 C225 130 215 150 200 150 Z" />
+    
+    <!-- Lily/Daisy Sketch (Top Right) -->
+    <circle cx="330" cy="70" r="4" />
+    <path d="M330 65 C325 50 335 50 330 65 Z M335 70 C350 65 350 75 335 70 Z M330 75 C335 90 325 90 330 75 Z M325 70 C310 75 310 65 325 70 Z" />
+    
+    <!-- Lily Sketch (Bottom Left) -->
+    <path d="M80 320 C60 300 100 280 80 320 Z" transform="rotate(45 80 320)"/>
+    <path d="M80 320 C100 300 60 280 80 320 Z" transform="rotate(-45 80 320)"/>
+    
+    <!-- Daisy (Bottom Right) -->
+    <circle cx="300" cy="330" r="3" />
+    <path d="M300 325 C295 310 305 310 300 325 Z M305 330 C320 325 320 335 305 330 Z M300 335 C305 350 295 350 300 335 Z M295 330 C280 335 280 325 295 330 Z" />
+  </g>
+  
+  <g class="leaf">
+    <!-- Various Leaves scattered -->
+    <path d="M150 100 C160 90 180 90 190 100 C180 110 160 110 150 100 Z" transform="rotate(20 150 100)"/>
+    <path d="M350 250 C360 240 380 240 390 250 C380 260 360 260 350 250 Z" transform="rotate(-30 350 250)"/>
+    <path d="M50 350 C60 340 80 340 90 350 C80 360 60 360 50 350 Z" />
+    <path d="M220 50 C230 40 250 40 260 50 C250 60 230 60 220 50 Z" />
+  </g>
+  
+  <!-- Seamlessness helpers (copied motifs at edges) -->
+  <g class="flower">
+     <path d="M50 150 C50 150 30 130 30 110 C30 95 45 90 50 105 C55 90 70 95 70 110 C70 130 50 150 50 150 Z" transform="translate(420, 20) rotate(-10 50 150)"/>
+     <path d="M50 150 C50 150 30 130 30 110 C30 95 45 90 50 105 C55 90 70 95 70 110 C70 130 50 150 50 150 Z" transform="translate(20, 420) rotate(-10 50 150)"/>
+  </g>
+</svg>

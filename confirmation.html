@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed - Friends Florist</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .confirmation-container {
+            max-width: 600px;
+            margin: 80px auto;
+            text-align: center;
+            background: white;
+            padding: 50px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--color-light-green);
+            color: var(--color-dark-green);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            margin: 0 auto 30px;
+        }
+        .order-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+        .order-id {
+            font-weight: 600;
+            color: var(--color-dark-green);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        .order-details {
+            background: var(--color-bg-gray);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .delivery-msg {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="navbar-container"></div>
+
+    <main>
+        <div class="container">
+            <div class="confirmation-container">
+                <div class="success-icon">✓</div>
+                <h1 class="order-title">Thank You for Your Order!</h1>
+                <p>Your beautiful arrangement is being prepared with care.</p>
+                
+                <div class="order-id" id="display-order-id">Order ID: #ORD-XXXXXX</div>
+                
+                <div class="order-details">
+                    <p style="margin-bottom: 10px;"><strong>Payment Method:</strong> <span id="display-method">Credit Card</span></p>
+                    <p style="margin-bottom: 10px;"><strong>Order Status:</strong> Confirmed</p>
+                    <p><strong>Confirmation Email:</strong> Sent</p>
+                </div>
+
+                <div class="delivery-msg">
+                    <span style="font-size: 1.5rem; display: block; margin-bottom: 15px;">🚚</span>
+                    Estimated Delivery: <strong>Tomorrow between 10 AM - 2 PM</strong>
+                </div>
+
+                <a href="index.html" class="btn btn-primary" style="margin-right: 15px;">Return to Home</a>
+                <a href="shop.html" class="btn btn-secondary">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Read ID from URL, default to random if not found (direct navigation)
+            const passedId = params.get('id');
+            const orderId = passedId ? passedId : 'ORD-' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+            document.getElementById('display-order-id').textContent = `Order ID: #${orderId}`;
+
+            // Read method from URL
+            const method = params.get('method') || 'Online Payment';
+            document.getElementById('display-method').textContent = method;
+        });
+    </script>
+</body>
+</html>

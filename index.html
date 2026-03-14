@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends Florist - Elegant Floral Arrangements</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    
+    <!-- Navbar Component Container -->
+    <div id="navbar-container"></div>
+
+    <main>
+        <!-- Home Header Banner -->
+        <header class="hero-section">
+            <!-- Scrolling Bouquet Background -->
+            <div class="hero-photo-scroll">
+                <div class="scroll-track row-1">
+                    <!-- Set 1 (User-Uploaded Images) -->
+                    <img src="images/floating/img1.png" alt="">
+                    <img src="images/floating/img2.png" alt="">
+                    <img src="images/floating/img3.png" alt="">
+                    <img src="images/floating/img4.png" alt="">
+                    <img src="images/floating/img5.png" alt="">
+                    <img src="images/floating/img6.png" alt="">
+                    <img src="images/floating/img7.png" alt="">
+                    <img src="images/floating/img8.png" alt="">
+                    <img src="images/floating/img9.png" alt="">
+                    <img src="images/floating/img10.png" alt="">
+                    <!-- Duplicated for Loop -->
+                    <img src="images/floating/img1.png" alt="">
+                    <img src="images/floating/img2.png" alt="">
+                    <img src="images/floating/img3.png" alt="">
+                    <img src="images/floating/img4.png" alt="">
+                    <img src="images/floating/img5.png" alt="">
+                </div>
+                <div class="scroll-track row-2">
+                    <!-- Set 2 (User-Uploaded Images, shuffled order) -->
+                    <img src="images/floating/img10.png" alt="">
+                    <img src="images/floating/img9.png" alt="">
+                    <img src="images/floating/img8.png" alt="">
+                    <img src="images/floating/img7.png" alt="">
+                    <img src="images/floating/img6.png" alt="">
+                    <img src="images/floating/img5.png" alt="">
+                    <img src="images/floating/img4.png" alt="">
+                    <img src="images/floating/img3.png" alt="">
+                    <img src="images/floating/img2.png" alt="">
+                    <img src="images/floating/img1.png" alt="">
+                    <!-- Duplicated for Loop -->
+                    <img src="images/floating/img10.png" alt="">
+                    <img src="images/floating/img9.png" alt="">
+                    <img src="images/floating/img8.png" alt="">
+                    <img src="images/floating/img7.png" alt="">
+                    <img src="images/floating/img6.png" alt="">
+                </div>
+            </div>
+            
+            <div class="container hero-container">
+                <div class="hero-text">
+                    <h1>Welcome to Friends Florist</h1>
+                    <p>Bringing nature's elegance to your doorstep. Explore our exquisite collection of fresh flowers and arrangements for every occasion.</p>
+                    <a href="shop.html" class="btn btn-primary">Shop Now</a>
+                </div>
+                <div class="hero-image">
+                    <!-- High quality aesthetic bunch of flowers image -->
+                    <img src="images/beautiful_flowers.png" alt="Aesthetic bunch of flowers">
+                </div>
+            </div>
+        </header>
+        
+        <!-- Featured Categories -->
+        <section class="home-section">
+            <div class="container">
+                <h2 class="section-title">Shop by Category</h2>
+                <div class="category-grid" id="home-categories">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Best Sellers -->
+        <section class="home-section bg-light-pink">
+            <div class="container">
+                <h2 class="section-title">Best Sellers</h2>
+                <div class="product-grid" id="best-sellers-grid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Deals of the Day -->
+        <section class="home-section">
+            <div class="container">
+                <h2 class="section-title">Deals of the Day</h2>
+                <div class="deals-banner">
+                    <div class="deals-content">
+                        <h3>Special Anniversary Collection</h3>
+                        <p>Get 20% off on all Anniversary Bouquets today!</p>
+                        <a href="shop.html?deal=anniversary" class="btn btn-secondary">Claim Offer</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="home-section bg-light-green">
+            <div class="container">
+                <h2 class="section-title">What Our Customers Say</h2>
+                <div class="testimonials-grid" id="testimonials-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram Gallery Placeholder -->
+        <section class="home-section">
+            <div class="container">
+                <h2 class="section-title">Follow Us on Instagram</h2>
+                <div class="insta-grid" id="insta-gallery">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component Container -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

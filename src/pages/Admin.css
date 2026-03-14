@@ -1,0 +1,241 @@
+.admin-container {
+  display: flex;
+  min-height: calc(100vh - 80px); /* rough navbar subtraction */
+  margin: -2rem; /* negate main content padding for full bleed */
+  background: var(--bg-main);
+}
+
+.admin-sidebar {
+  width: 250px;
+  background: var(--secondary);
+  color: white;
+  padding: 2rem 1.5rem;
+  flex-shrink: 0;
+}
+
+.admin-sidebar h2 {
+  color: white;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-nav button {
+  background: transparent;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  padding: 1rem;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.admin-nav button:hover, .admin-nav button.active {
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.admin-main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-header {
+  background: var(--bg-card);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+
+.admin-user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.admin-content-area {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Dashboard Cards */
+.admin-dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
+
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--bg-main);
+  color: var(--primary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.stat-info h4 {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif;
+  margin-bottom: 0.3rem;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+/* Tables */
+.recent-orders-sect {
+  grid-column: 1 / -1;
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin-top: 1rem;
+}
+
+.recent-orders-sect h3, .section-header-admin h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+.section-header-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.admin-table th {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-badge.pending { background: #fff8e1; color: #f57f17; }
+.status-badge.delivered { background: #e6f4ea; color: #1e8e3e; }
+.status-badge.processing { background: #e3f2fd; color: #1976d2; }
+
+.admin-prod-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.text-btn {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.text-btn:hover { text-decoration: underline; }
+.text-danger { color: #e53935; }
+
+.placeholder-content {
+  text-align: center;
+  padding: 4rem;
+  color: var(--text-light);
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 900px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .admin-nav {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  
+  .admin-nav button {
+    white-space: nowrap;
+  }
+}
